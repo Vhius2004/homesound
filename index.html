@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Thư viện Âm nhạc Truyền thống Việt Nam</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts & Lucide Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;1,400&family=Playfair+Display:ital,wght@0,600;0,700;0,900;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            co_do: '#800020',       // Đỏ mận chủ đạo
+            co_do_dark: '#5B0017',
+            vang_dong: '#B8860B',   // Vàng đồng truyền thống
+            vang_dong_light: '#E6C687',
+            giay_do: '#FAF6EE',     // Nền màu giấy dó nhẹ nhàng
+            chu_xam: '#2D2825',
+          },
+          fontFamily: {
+            serif: ['"Playfair Display"', 'serif'],
+            body: ['"Plus Jakarta Sans"', 'sans-serif'],
+            quote: ['"Merriweather"', 'serif'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      background-color: #FAF6EE;
+      color: #2D2825;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+    .custom-scroll::-webkit-scrollbar {
+      width: 6px;
+    }
+    .custom-scroll::-webkit-scrollbar-thumb {
+      background-color: #B8860B;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body class="flex flex-col min-h-screen">
+
+  <!-- ================= TOP NAVIGATION ================= -->
+  <header class="sticky top-0 z-50 bg-[#800020] text-[#FAF6EE] shadow-md border-b-2 border-vang_dong">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-20">
+        <!-- Logo -->
+        <div class="flex items-center space-x-3 cursor-pointer" onclick="navigate('home')">
+          <div class="w-12 h-12 rounded-full border-2 border-vang_dong flex items-center justify-center bg-[#5B0017]">
+            <i data-lucide="music" class="w-6 h-6 text-vang_dong"></i>
+          </div>
+          <div>
+            <h1 class="font-serif font-bold text-lg sm:text-xl tracking-wide text-white">ÂM NHẠC TRUYỀN THỐNG</h1>
+            <p class="text-xs text-vang_dong_light tracking-wider uppercase font-semibold">Di sản ngàn năm nước Việt</p>
+          </div>
+        </div>
+
+        <!-- Menu Desktop -->
+        <nav class="hidden md:flex items-center space-x-6 text-sm font-medium">
+          <button onclick="navigate('home')" class="nav-btn hover:text-vang_dong transition py-1" id="nav-home">Trang chủ</button>
+          <button onclick="navigate('intro')" class="nav-btn hover:text-vang_dong transition py-1" id="nav-intro">Giới thiệu</button>
+          <button onclick="navigate('sources')" class="nav-btn hover:text-vang_dong transition py-1" id="nav-sources">Nguồn tham khảo</button>
+          
+          <button onclick="openApiKeyModal()" class="flex items-center space-x-1.5 px-3.5 py-1.5 rounded-full border border-vang_dong text-vang_dong_light hover:bg-vang_dong hover:text-[#5B0017] transition text-xs font-semibold">
+            <i data-lucide="key" class="w-3.5 h-3.5"></i>
+            <span id="api-btn-label">Cài đặt API Gemini</span>
+          </button>
+        </nav>
+
+        <!-- Menu Mobile Button -->
+        <div class="flex md:hidden items-center space-x-2">
+          <button onclick="openApiKeyModal()" class="p-2 text-vang_dong" title="API Key">
+            <i data-lucide="key" class="w-5 h-5"></i>
+          </button>
+          <button onclick="toggleMobileMenu()" class="p-2 text-white">
+            <i data-lucide="menu" class="w-6 h-6"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mobile Navigation Drawer -->
+    <div id="mobile-menu" class="hidden md:hidden bg-[#5B0017] border-t border-vang_dong px-4 pt-3 pb-4 space-y-2 text-sm font-medium">
+      <button onclick="navigate('home'); toggleMobileMenu()" class="block w-full text-left py-2 px-3 rounded hover:bg-[#800020] text-white">Trang chủ</button>
+      <button onclick="navigate('intro'); toggleMobileMenu()" class="block w-full text-left py-2 px-3 rounded hover:bg-[#800020] text-white">Giới thiệu dự án</button>
+      <button onclick="navigate('sources'); toggleMobileMenu()" class="block w-full text-left py-2 px-3 rounded hover:bg-[#800020] text-white">Nguồn tư liệu tham khảo</button>
+    </div>
+  </header>
+
+  <!-- ================= MAIN CONTENT CONTAINER ================= -->
+  <main class="flex-grow max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8">
+
+    <!-- 1. MÀN HÌNH TRANG CHỦ -->
+    <section id="view-home" class="space-y-10">
+      <!-- Banner Chào Mừng -->
+      <div class="relative rounded-2xl overflow-hidden bg-gradient-to-r from-[#800020] via-[#66001A] to-[#3B000F] text-white p-8 sm:p-12 shadow-xl border border-vang_dong/40">
+        <div class="relative z-10 max-w-2xl space-y-4">
+          <div class="inline-flex items-center space-x-2 bg-vang_dong/20 border border-vang_dong/60 px-3 py-1 rounded-full text-xs font-semibold text-vang_dong_light">
+            <i data-lucide="sparkles" class="w-3.5 h-3.5 text-vang_dong"></i>
+            <span>Bảo tồn & Lan tỏa Tinh hoa Dân tộc</span>
+          </div>
+          <h2 class="text-3xl sm:text-4xl lg:text-5xl font-serif font-bold text-white leading-tight">
+            Gìn giữ Hồn cốt Giai điệu Việt
+          </h2>
+          <p class="text-gray-200 text-sm sm:text-base leading-relaxed">
+            Khám phá chiều sâu lịch sử, không gian diễn xướng và giá trị nghệ thuật đặc sắc của các di sản âm nhạc truyền thống được UNESCO vinh danh.
+          </p>
+          
+          <!-- Thanh tìm kiếm nhanh -->
+          <div class="pt-2">
+            <div class="relative flex items-center">
+              <i data-lucide="search" class="absolute left-4 w-5 h-5 text-gray-400"></i>
+              <input 
+                type="text" 
+                id="search-input" 
+                oninput="handleSearch(this.value)"
+                placeholder="Tìm loại hình (Quan họ, Ca trù, Nhã nhạc, Đờn ca...), vùng miền..." 
+                class="w-full pl-12 pr-4 py-3.5 rounded-xl bg-white text-chu_xam placeholder-gray-400 text-sm focus:outline-none focus:ring-2 focus:ring-vang_dong shadow-lg font-medium"
+              >
+            </div>
+          </div>
+        </div>
+        <!-- Hoa văn trang trí góc -->
+        <div class="absolute -right-12 -bottom-12 opacity-10 pointer-events-none">
+          <i data-lucide="disc-3" class="w-96 h-96 text-white"></i>
+        </div>
+      </div>
+
+      <!-- Danh sách Thẻ Loại Hình Âm Nhạc -->
+      <div>
+        <div class="flex items-center justify-between mb-6">
+          <div>
+            <h3 class="text-2xl font-serif font-bold text-co_do">Di Sản Âm Nhạc Tiêu Biểu</h3>
+            <p class="text-xs sm:text-sm text-gray-600 mt-1">Chọn một thể loại để xem tư liệu chi tiết và đối thoại cùng AI</p>
+          </div>
+          <span id="result-count" class="text-xs font-semibold px-3 py-1 bg-amber-100 text-co_do border border-vang_dong/40 rounded-full">
+            4 Loại hình
+          </span>
+        </div>
+
+        <div id="music-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <!-- Rendered by JavaScript -->
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. MÀN HÌNH CHI TIẾT LOẠI HÌNH -->
+    <section id="view-detail" class="hidden space-y-8">
+      <button onclick="navigate('home')" class="inline-flex items-center space-x-2 text-sm font-semibold text-co_do hover:text-vang_dong transition">
+        <i data-lucide="arrow-left" class="w-4 h-4"></i>
+        <span>Quay lại Trang chủ</span>
+      </button>
+
+      <div id="detail-content" class="space-y-8">
+        <!-- Rendered by JavaScript -->
+      </div>
+    </section>
+
+    <!-- 3. MÀN HÌNH GIỚI THIỆU -->
+    <section id="view-intro" class="hidden space-y-8">
+      <div class="bg-white rounded-2xl shadow-md border border-amber-200/80 p-6 sm:p-10">
+        <div class="border-b border-amber-200 pb-5 mb-6">
+          <h2 class="text-2xl sm:text-3xl font-serif font-bold text-co_do">Giới Thiệu Đề Tài Thực Tập</h2>
+          <p class="text-sm text-gray-600 mt-1">Báo cáo dự án học tập & phát triển công nghệ truyền thông di sản</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+          <div class="space-y-4">
+            <h3 class="text-lg font-serif font-bold text-vang_dong flex items-center space-x-2">
+              <i data-lucide="user-check" class="w-5 h-5 text-co_do"></i>
+              <span>Thông tin Tác giả & Đơn vị</span>
+            </h3>
+            <div class="bg-giay_do p-5 rounded-xl border border-amber-200 space-y-3 text-sm">
+              <div class="flex justify-between border-b border-amber-200/60 pb-2">
+                <span class="text-gray-600">Họ và tên:</span>
+                <span class="font-bold text-co_do">Lừ Văn Hiếu</span>
+              </div>
+              <div class="flex justify-between border-b border-amber-200/60 pb-2">
+                <span class="text-gray-600">Mã sinh viên:</span>
+                <span class="font-bold text-co_do">PH69927</span>
+              </div>
+              <div class="flex justify-between border-b border-amber-200/60 pb-2">
+                <span class="text-gray-600">Nhóm thực hiện:</span>
+                <span class="font-bold text-chu_xam">Nhóm 1</span>
+              </div>
+              <div class="flex justify-between border-b border-amber-200/60 pb-2">
+                <span class="text-gray-600">Đợt thực tập:</span>
+                <span class="font-bold text-chu_xam">Thực tập sinh Đợt 15</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-gray-600">Đơn vị liên kết:</span>
+                <span class="font-bold text-co_do">FPT Polytechnic & IMTA TECH</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="space-y-4">
+            <h3 class="text-lg font-serif font-bold text-vang_dong flex items-center space-x-2">
+              <i data-lucide="target" class="w-5 h-5 text-co_do"></i>
+              <span>Mục tiêu của Dự án Ứng dụng</span>
+            </h3>
+            <ul class="space-y-3 text-sm text-gray-700 leading-relaxed list-disc list-inside bg-giay_do p-5 rounded-xl border border-amber-200">
+              <li><strong>Số hóa dữ liệu văn hóa:</strong> Giúp học sinh, sinh viên và công chúng dễ dàng tiếp cận các loại hình di sản âm nhạc dân tộc có hệ thống.</li>
+              <li><strong>Tương tác trí tuệ nhân tạo:</strong> Ứng dụng mô hình ngôn ngữ lớn (Google Gemini) để giải đáp kiến thức chuẩn xác, hỗ trợ học tập lịch sử âm nhạc trực quan.</li>
+              <li><strong>Thiết kế thân thiện:</strong> Giao diện tối ưu cho đa thiết bị, phong cách mỹ thuật cổ truyền chuẩn mực, dễ đọc và dễ thao tác.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. MÀN HÌNH NGUỒN THAM KHẢO -->
+    <section id="view-sources" class="hidden space-y-8">
+      <div class="bg-white rounded-2xl shadow-md border border-amber-200/80 p-6 sm:p-10">
+        <div class="border-b border-amber-200 pb-5 mb-6">
+          <h2 class="text-2xl sm:text-3xl font-serif font-bold text-co_do">Tài Liệu & Nguồn Tham Khảo Chính Thống</h2>
+          <p class="text-sm text-gray-600 mt-1">Dữ liệu được biên soạn và kiểm chứng từ các cơ quan di sản quốc gia và tổ chức quốc tế</p>
+        </div>
+
+        <div class="space-y-4" id="reference-list">
+          <!-- Rendered by JavaScript -->
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ================= MODAL CÀI ĐẶT GEMINI API KEY ================= -->
+  <div id="api-modal" class="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-vang_dong space-y-4">
+      <div class="flex items-center justify-between border-b pb-3">
+        <h3 class="font-serif font-bold text-lg text-co_do flex items-center space-x-2">
+          <i data-lucide="shield-check" class="w-5 h-5 text-vang_dong"></i>
+          <span>Cấu hình Gemini API Key</span>
+        </h3>
+        <button onclick="closeApiKeyModal()" class="text-gray-400 hover:text-gray-600">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <div class="text-xs text-gray-600 leading-relaxed bg-amber-50 p-3 rounded-lg border border-amber-200">
+        <p><strong>Bảo mật:</strong> Khóa API của bạn được lưu tạm thời trong trình duyệt (<code>sessionStorage</code>), không lưu trữ công khai trong mã nguồn, bảo đảm tiêu chuẩn an toàn.</p>
+      </div>
+
+      <div>
+        <label class="block text-xs font-semibold text-gray-700 mb-1">Nhập Google Gemini API Key của bạn:</label>
+        <input 
+          type="password" 
+          id="api-key-input" 
+          placeholder="AIzaSy..." 
+          class="w-full px-3 py-2 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-co_do font-mono"
+        >
+      </div>
+
+      <div class="flex justify-end space-x-3 pt-2">
+        <button onclick="closeApiKeyModal()" class="px-4 py-2 text-xs font-semibold text-gray-600 hover:bg-gray-100 rounded-lg">Đóng</button>
+        <button onclick="saveApiKey()" class="px-4 py-2 text-xs font-semibold text-white bg-co_do hover:bg-co_do_dark rounded-lg">Lưu cấu hình</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= FOOTER ================= -->
+  <footer class="bg-[#5B0017] text-white border-t-2 border-vang_dong mt-12 py-6 text-xs text-center">
+    <div class="max-w-7xl mx-auto px-4 space-y-2">
+      <p class="font-serif tracking-wider font-bold text-vang_dong_light">THƯ VIỆN ÂM NHẠC TRUYỀN THỐNG VIỆT NAM</p>
+      <p class="text-gray-300">Sản phẩm thực tập của sinh viên: <strong class="text-white">Lừ Văn Hiếu (PH69927)</strong> - Nhóm 1 - Đợt 15 FPT Polytechnic & IMTA TECH</p>
+      <p class="text-gray-400 text-[11px]">Dữ liệu phục vụ mục đích giáo dục, lưu trữ và bảo tồn di sản văn hóa phi vật thể.</p>
+    </div>
+  </footer>
+
+  <!-- ================= JAVASCRIPT LOGIC ================= -->
+  <script>
+    // --- DỮ LIỆU CHUẨN 4 LOẠI HÌNH ÂM NHẠC ---
+    const MUSIC_DATA = [
+      {
+        id: "quan-ho",
+        ten: "Dân ca Quan họ Bắc Ninh",
+        vungMien: "Vùng Kinh Bắc (Bắc Ninh, Bắc Giang)",
+        unesco: "Di sản văn hóa phi vật thể đại diện của nhân loại (2009)",
+        hinhAnh: "https://images.unsplash.com/photo-1528127269322-539801943592?auto=format&fit=crop&w=800&q=80",
+        moTaNgan: "Lối hát giao duyên đối đáp tao nhã, tình tứ của các liền anh, liền chị vùng quê Kinh Bắc đậm đà tình nghĩa.",
+        lichSu: "Quan họ hình thành từ rất lâu đời trong lịch sử văn hóa làng xã vùng đồng bằng châu thổ sông Hồng, gắn liền với tín ngưỡng, hội làng mùa xuân và đời sống giao lưu kết chạ giữa các làng xóm vùng Kinh Bắc xưa.",
+        khongGian: "Diễn xướng trong không gian đình làng, hội Lim, trên thuyền rồng bồng bềnh giữa hồ nước hoặc hát canh trong nhà tại tư gia các 'nhà chứa' quan họ truyền thống.",
+        dacTrung: "Kỹ thuật hát đạt chuẩn bốn tiêu chí: 'Nền - Nảy - Rền - Vang'. Lối đối đáp nghiêm cẩn giữa liền anh và liền chị; trang phục truyền thống mẫu mực gồm nón quai thao, khăn xếp, áo tứ thân lụa là.",
+        baiMau: [
+          { ten: "Người ơi người ở đừng về", tacGia: "Dân ca Quan họ cổ" },
+          { ten: "Cây trúc xinh", tacGia: "Dân ca Quan họ cổ" },
+          { ten: "Khách đến chơi nhà", tacGia: "Dân ca Quan họ cổ" }
+        ],
+        nguon: "Cục Di sản Văn hóa - Bộ Văn hóa, Thể thao và Du lịch"
+      },
+      {
+        id: "ca-tru",
+        ten: "Nghệ thuật Ca trù",
+        vungMien: "Bắc Bộ và Bắc Trung Bộ (Hà Nội, Hải Dương, Hà Tĩnh...)",
+        unesco: "Di sản văn hóa phi vật thể cần bảo vệ khẩn cấp (2009)",
+        hinhAnh: "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?auto=format&fit=crop&w=800&q=80",
+        moTaNgan: "Nghệ thuật thính phòng đỉnh cao kết hợp tinh tế giữa thi ca bác học, giọng hát đào nương và tiếng đàn đáy trầm bổng.",
+        lichSu: "Thịnh hành từ thế kỷ 15 đến thế kỷ 19, Ca trù (còn gọi là hát cô đầu, hát nhà tơ, hát cửa đình) từng là thú chơi tao nhã bậc nhất của giới trí thức phong kiến, quan lại và tao nhân mặc khách đất Thăng Long.",
+        khongGian: "Biểu diễn tại cửa đình linh thiêng, dinh thự các quan lại, ca quán thính phòng với chiếu hát trang trọng, người thưởng ngoạn đánh trống chầu cầm chịch.",
+        dacTrung: "Cấu trúc tối thiểu gồm đào nương (vừa hát vừa gõ phách), kép đàn (gảy đàn đáy gỗ ngô đồng dây tơ) và quan viên (cầm trống chầu chấm điểm bằng tiếng 'cắc', 'tom'). Ca từ sử dụng thể thơ hát nói điêu luyện của các thi sĩ lớn.",
+        baiMau: [
+          { ten: "Hương Sơn phong cảnh ca", tacGia: "Thơ Chu Mạnh Trinh" },
+          { ten: "Tỳ bà hành", tacGia: "Bạch Cư Dị - Bản dịch Phan Huy Vịnh" },
+          { ten: "Chí làm trai", tacGia: "Thơ Nguyễn Công Trứ" }
+        ],
+        nguon: "Viện Âm nhạc - Học viện Âm nhạc Quốc gia Việt Nam"
+      },
+      {
+        id: "nha-nhac",
+        ten: "Nhã nhạc cung đình Huế",
+        vungMien: "Cố đô Huế (Thừa Thiên Huế)",
+        unesco: "Kiệt tác Di sản truyền khẩu và phi vật thể nhân loại (2003)",
+        hinhAnh: "https://images.unsplash.com/photo-1559592413-7cec4d0cae2b?auto=format&fit=crop&w=800&q=80",
+        moTaNgan: "Âm nhạc bác học đỉnh cao, biểu tượng quyền uy và trật tự lễ nghi thời phong kiến triều Nguyễn.",
+        lichSu: "Phát triển rực rỡ dưới thời các chúa Nguyễn và đạt đỉnh cao mẫu mực dưới triều đại nhà Nguyễn (1802-1945). Đây là dòng âm nhạc cung đình có quy phạm chặt chẽ nhất trong lịch sử âm nhạc Việt Nam.",
+        khongGian: "Diễn xướng nơi sân rồng trước điện Thái Hòa, điện Cần Chánh, đàn Nam Giao, Tông Miếu và các yến tiệc ngoại giao quốc tế của Hoàng gia.",
+        dacTrung: "Dàn nhạc quy chuẩn chặt chẽ gồm Đại nhạc (trống chiến, kèn bóp, xập xõa...) và Tiểu nhạc (đàn tỳ bà, đàn tam, đàn nhị, sáo trúc). Tính chất tôn nghiêm, quy củ, hòa quyện triết lý âm dương ngũ hành.",
+        baiMau: [
+          { ten: "Lưu thủy - Kim tiền", tacGia: "Nhã nhạc Triều Nguyễn" },
+          { ten: "Mười bản ngự (Thập thủ liên hoàn)", tacGia: "Cung đình Huế" },
+          { ten: "Long ngâm", tacGia: "Đại nhạc Cung đình" }
+        ],
+        nguon: "Trung tâm Bảo tồn Di tích Cố đô Huế & UNESCO"
+      },
+      {
+        id: "don-ca-tai-tu",
+        ten: "Đờn ca tài tử Nam Bộ",
+        vungMien: "21 tỉnh, thành phố khu vực Nam Bộ",
+        unesco: "Di sản văn hóa phi vật thể đại diện của nhân loại (2013)",
+        hinhAnh: "https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=800&q=80",
+        moTaNgan: "Tiếng tơ đồng phóng khoáng, biểu thị nét nghĩa khí, tâm hồn phóng khoáng và phóng khoáng của người dân phương Nam.",
+        lichSu: "Ra đời vào cuối thế kỷ 19, bắt nguồn từ nhạc lễ Cung đình Huế kết hợp với điệu hò, điệu lý dân gian miệt vườn sông nước Cửu Long do các bậc tiền bối như cụ Nguyễn Quang Đại (Ba Đợi) truyền dạy.",
+        khongGian: "Không gian sinh hoạt cộng đồng gần gũi: dưới bóng râm vườn cây trái, trên bến sông, ghe thuyền, hoặc những đêm trăng thanh sau ngày mùa lao động vất vả.",
+        dacTrung: "Hệ thống bài bản gồm '20 bản tổ' (6 bản Bắc, 3 bản Nam, 4 bản Oán, 7 bản Lớn). Ban nhạc phối hợp ngũ tuyệt: Đàn tranh, đàn kìm (đàn nguyệt), đàn cò, đàn bầu và ghi-ta phím lõm độc đáo.",
+        baiMau: [
+          { ten: "Dạ cổ hoài lang", tacGia: "Nhạc sĩ Cao Văn Lầu" },
+          { ten: "Tứ đại oán", tacGia: "Bản tổ Tài tử" },
+          { ten: "Bình bán vắn", tacGia: "Hơi Bắc vui tươi" }
+        ],
+        nguon: "Hội Văn nghệ Dân gian Việt Nam"
+      }
+    ];
+
+    // --- DANH SÁCH NGUỒN TÀI LIỆU CHÍNH THỐNG (5 NGUỒN) ---
+    const REFERENCE_SOURCES = [
+      {
+        ten: "Cục Di sản Văn hóa - Bộ Văn hóa, Thể thao và Du lịch",
+        moTa: "Cơ quan quản lý nhà nước về hệ thống di sản văn hóa phi vật thể quốc gia và tư liệu hồ sơ đệ trình UNESCO.",
+        lienKet: "http://dsvh.gov.vn"
+      },
+      {
+        ten: "Viện Âm nhạc - Học viện Âm nhạc Quốc gia Việt Nam",
+        moTa: "Đơn vị nghiên cứu khoa học, sưu tầm, bảo tồn và lưu trữ các ấn bản băng đĩa, ký âm dân ca cổ truyền Việt Nam.",
+        lienKet: "http://vniam.org.vn"
+      },
+      {
+        ten: "UNESCO Intangible Cultural Heritage Database",
+        moTa: "Hồ sơ đệ trình chính thức và quyết định công nhận các di sản văn hóa phi vật thể của nhân loại tại Việt Nam.",
+        lienKet: "https://ich.unesco.org"
+      },
+      {
+        ten: "Trung tâm Bảo tồn Di tích Cố đô Huế",
+        moTa: "Cơ quan bảo tồn và phục hồi không gian diễn xướng nguyên bản của Nhã nhạc Cung đình Huế.",
+        lienKet: "http://hueworldheritage.org.vn"
+      },
+      {
+        ten: "Giáo trình Âm nhạc Truyền thống Việt Nam (GS.TS. Trần Văn Khê & các nhà nghiên cứu)",
+        moTa: "Tài liệu học thuật kinh điển về hệ thống thang âm điệu thức, tính bác học và mỹ học âm nhạc phương Đông.",
+        lienKet: "#"
+      }
+    ];
+
+    // --- QUẢN LÝ ĐIỀU HƯỚNG MÀN HÌNH ---
+    function navigate(viewName, param = null) {
+      document.getElementById('view-home').classList.add('hidden');
+      document.getElementById('view-detail').classList.add('hidden');
+      document.getElementById('view-intro').classList.add('hidden');
+      document.getElementById('view-sources').classList.add('hidden');
+
+      // Update Active Navigation Button Styling
+      ['nav-home', 'nav-intro', 'nav-sources'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.classList.remove('text-vang_dong', 'font-bold');
+      });
+
+      if (viewName === 'home') {
+        document.getElementById('view-home').classList.remove('hidden');
+        document.getElementById('nav-home')?.classList.add('text-vang_dong', 'font-bold');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else if (viewName === 'detail') {
+        document.getElementById('view-detail').classList.remove('hidden');
+        renderDetailView(param);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else if (viewName === 'intro') {
+        document.getElementById('view-intro').classList.remove('hidden');
+        document.getElementById('nav-intro')?.classList.add('text-vang_dong', 'font-bold');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else if (viewName === 'sources') {
+        document.getElementById('view-sources').classList.remove('hidden');
+        document.getElementById('nav-sources')?.classList.add('text-vang_dong', 'font-bold');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+      lucide.createIcons();
+    }
+
+    // --- HIỂN THỊ DANH SÁCH THẺ TRANG CHỦ ---
+    function renderMusicCards(items) {
+      const container = document.getElementById('music-grid');
+      container.innerHTML = '';
+
+      if (items.length === 0) {
+        container.innerHTML = `
+          <div class="col-span-full py-12 text-center text-gray-500">
+            <i data-lucide="info" class="w-10 h-10 mx-auto text-gray-400 mb-2"></i>
+            <p>Không tìm thấy loại hình âm nhạc phù hợp với từ khóa.</p>
+          </div>
+        `;
+        lucide.createIcons();
+        return;
+      }
+
+      items.forEach(item => {
+        const card = document.createElement('div');
+        card.className = "bg-white rounded-xl shadow-md overflow-hidden border border-amber-200/70 hover:shadow-xl transition-all duration-300 flex flex-col group cursor-pointer";
+        card.onclick = () => navigate('detail', item.id);
+
+        card.innerHTML = `
+          <div class="h-44 overflow-hidden relative">
+            <img src="${item.hinhAnh}" alt="${item.ten}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
+            <span class="absolute bottom-2 left-2 text-[11px] font-semibold text-vang_dong_light bg-black/60 px-2.5 py-0.5 rounded-full backdrop-blur-sm">
+              ${item.vungMien.split('(')[0]}
+            </span>
+          </div>
+          <div class="p-5 flex-1 flex flex-col justify-between space-y-3">
+            <div>
+              <h4 class="font-serif font-bold text-lg text-co_do group-hover:text-vang_dong transition-colors">
+                ${item.ten}
+              </h4>
+              <p class="text-xs text-gray-600 line-clamp-2 mt-2 leading-relaxed">
+                ${item.moTaNgan}
+              </p>
+            </div>
+            <div class="pt-2 border-t border-gray-100 flex items-center justify-between text-xs font-semibold text-co_do">
+              <span>Xem chi tiết di sản</span>
+              <i data-lucide="chevron-right" class="w-4 h-4 text-vang_dong group-hover:translate-x-1 transition-transform"></i>
+            </div>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+      lucide.createIcons();
+    }
+
+    // --- TÌM KIẾM NHANH ---
+    function handleSearch(query) {
+      const q = query.trim().toLowerCase();
+      const filtered = MUSIC_DATA.filter(item => 
+        item.ten.toLowerCase().includes(q) ||
+        item.vungMien.toLowerCase().includes(q) ||
+        item.moTaNgan.toLowerCase().includes(q) ||
+        item.dacTrung.toLowerCase().includes(q)
+      );
+      document.getElementById('result-count').innerText = `${filtered.length} Loại hình`;
+      renderMusicCards(filtered);
+    }
+
+    // --- HIỂN THỊ MÀN HÌNH CHI TIẾT ---
+    function renderDetailView(id) {
+      const item = MUSIC_DATA.find(x => x.id === id);
+      if (!item) return;
+
+      const container = document.getElementById('detail-content');
+      container.innerHTML = `
+        <div class="bg-white rounded-2xl shadow-md border border-amber-200 overflow-hidden">
+          <div class="relative h-64 sm:h-80 bg-gray-900">
+            <img src="${item.hinhAnh}" class="w-full h-full object-cover opacity-60">
+            <div class="absolute inset-0 bg-gradient-to-t from-[#5B0017] via-[#5B0017]/40 to-transparent"></div>
+            <div class="absolute bottom-6 left-6 right-6 text-white space-y-2">
+              <span class="inline-block bg-vang_dong text-co_do_dark px-3 py-1 rounded-md text-xs font-bold uppercase tracking-wider">
+                ${item.unesco}
+              </span>
+              <h2 class="text-3xl sm:text-4xl font-serif font-bold text-white">${item.ten}</h2>
+              <p class="text-xs sm:text-sm text-vang_dong_light flex items-center space-x-1">
+                <i data-lucide="map-pin" class="w-4 h-4"></i>
+                <span>Xuất xứ: ${item.vungMien}</span>
+              </p>
+            </div>
+          </div>
+
+          <div class="p-6 sm:p-10 space-y-8">
+            <!-- 3 Khối Nội Dung Chính -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div class="bg-giay_do p-5 rounded-xl border border-amber-200/80 space-y-2">
+                <h4 class="font-serif font-bold text-co_do flex items-center space-x-2">
+                  <i data-lucide="landmark" class="w-4 h-4 text-vang_dong"></i>
+                  <span>Lịch Sử Hình Thành</span>
+                </h4>
+                <p class="text-xs sm:text-sm text-gray-700 leading-relaxed text-justify">${item.lichSu}</p>
+              </div>
+
+              <div class="bg-giay_do p-5 rounded-xl border border-amber-200/80 space-y-2">
+                <h4 class="font-serif font-bold text-co_do flex items-center space-x-2">
+                  <i data-lucide="tent" class="w-4 h-4 text-vang_dong"></i>
+                  <span>Không Gian Diễn Xướng</span>
+                </h4>
+                <p class="text-xs sm:text-sm text-gray-700 leading-relaxed text-justify">${item.khongGian}</p>
+              </div>
+
+              <div class="bg-giay_do p-5 rounded-xl border border-amber-200/80 space-y-2">
+                <h4 class="font-serif font-bold text-co_do flex items-center space-x-2">
+                  <i data-lucide="music-2" class="w-4 h-4 text-vang_dong"></i>
+                  <span>Đặc Trưng Nghệ Thuật</span>
+                </h4>
+                <p class="text-xs sm:text-sm text-gray-700 leading-relaxed text-justify">${item.dacTrung}</p>
+              </div>
+            </div>
+
+            <!-- Bài Hát Mẫu & Nguồn Dẫn -->
+            <div class="border-t border-amber-200 pt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <h4 class="font-serif font-bold text-co_do mb-3 flex items-center space-x-2">
+                  <i data-lucide="disc" class="w-4 h-4 text-vang_dong"></i>
+                  <span>Các Điệu Thức & Bản Mẫu Tiêu Biểu</span>
+                </h4>
+                <div class="space-y-2">
+                  ${item.baiMau.map(b => `
+                    <div class="flex items-center justify-between p-3 bg-gray-50 border rounded-lg text-xs">
+                      <span class="font-semibold text-gray-800">${b.ten}</span>
+                      <span class="text-gray-500 italic">${b.tacGia}</span>
+                    </div>
+                  `).join('')}
+                </div>
+              </div>
+
+              <div>
+                <h4 class="font-serif font-bold text-co_do mb-3 flex items-center space-x-2">
+                  <i data-lucide="book-open" class="w-4 h-4 text-vang_dong"></i>
+                  <span>Nguồn Tư Liệu Biên Tập</span>
+                </h4>
+                <div class="p-4 bg-amber-50/70 rounded-lg border border-amber-200 text-xs text-gray-700 space-y-2">
+                  <p><strong>Cơ quan trích dẫn:</strong> ${item.nguon}</p>
+                  <p class="text-gray-500 italic">Dữ liệu được bảo tồn theo công ước bảo vệ di sản văn hóa phi vật thể của UNESCO và quy chuẩn thẩm định của Bộ VH-TT-DL.</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- KHỐI TRỢ LÝ AI GEMINI CHO TỪNG LOẠI HÌNH -->
+            <div class="border-t-2 border-vang_dong/40 pt-6">
+              <div class="bg-gradient-to-br from-amber-50 via-white to-amber-50/40 p-6 rounded-2xl border border-vang_dong shadow-sm space-y-4">
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center space-x-2">
+                    <div class="p-2 bg-co_do text-vang_dong rounded-lg">
+                      <i data-lucide="bot" class="w-5 h-5"></i>
+                    </div>
+                    <div>
+                      <h4 class="font-serif font-bold text-co_do text-base">Hỏi Đáp Cùng Trợ Lý Di Sản AI (Gemini)</h4>
+                      <p class="text-xs text-gray-600">Hỏi nguồn gốc nhạc cụ, quy tắc xướng hát hoặc ý nghĩa văn hóa của ${item.ten}</p>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Chat Box Output -->
+                <div id="ai-chat-output" class="bg-white rounded-xl border border-amber-200 p-4 min-h-[100px] max-h-72 overflow-y-auto text-xs sm:text-sm text-gray-800 custom-scroll space-y-2">
+                  <p class="text-gray-500 italic">Chào bạn! Tôi là trợ lý AI chuyên về Âm nhạc cổ truyền Việt Nam. Hãy đặt câu hỏi về loại hình <strong>${item.ten}</strong>, tôi sẽ tra cứu và trả lời chính xác dựa trên tài liệu lịch sử đã được kiểm chứng.</p>
+                </div>
+
+                <!-- Input Box -->
+                <div class="flex gap-2">
+                  <input 
+                    type="text" 
+                    id="ai-user-query" 
+                    placeholder="Ví dụ: Ý nghĩa của cây đàn đáy trong ca trù là gì?..." 
+                    class="flex-1 px-4 py-2.5 rounded-xl border border-amber-300 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-co_do"
+                    onkeydown="if(event.key === 'Enter') sendGeminiQuery('${item.ten}')"
+                  >
+                  <button 
+                    onclick="sendGeminiQuery('${item.ten}')" 
+                    id="ai-send-btn"
+                    class="px-5 py-2.5 bg-co_do hover:bg-co_do_dark text-white rounded-xl text-xs sm:text-sm font-semibold flex items-center space-x-1.5 transition disabled:opacity-50"
+                  >
+                    <span>Hỏi AI</span>
+                    <i data-lucide="send" class="w-3.5 h-3.5"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      `;
+      lucide.createIcons();
+    }
+
+    // --- HIỂN THỊ DANH SÁCH NGUỒN THAM KHẢO ---
+    function renderReferenceSources() {
+      const container = document.getElementById('reference-list');
+      container.innerHTML = '';
+      REFERENCE_SOURCES.forEach((source, index) => {
+        const item = document.createElement('div');
+        item.className = "p-4 sm:p-5 rounded-xl border border-amber-200 bg-giay_do flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4";
+        item.innerHTML = `
+          <div class="space-y-1">
+            <div class="flex items-center space-x-2">
+              <span class="w-6 h-6 rounded-full bg-co_do text-white flex items-center justify-center text-xs font-bold font-mono">
+                ${index + 1}
+              </span>
+              <h4 class="font-serif font-bold text-co_do text-sm sm:text-base">${source.ten}</h4>
+            </div>
+            <p class="text-xs text-gray-600 ml-8">${source.moTa}</p>
+          </div>
+          ${source.lienKet !== '#' ? `
+            <a href="${source.lienKet}" target="_blank" rel="noopener noreferrer" class="ml-8 sm:ml-0 inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-lg border border-vang_dong text-xs font-semibold text-co_do hover:bg-vang_dong hover:text-white transition whitespace-nowrap">
+              <span>Truy cập nguồn</span>
+              <i data-lucide="external-link" class="w-3 h-3"></i>
+            </a>
+          ` : '<span class="ml-8 sm:ml-0 text-[11px] text-gray-400 italic">Sách & Công trình khoa học</span>'}
+        `;
+        container.appendChild(item);
+      });
+      lucide.createIcons();
+    }
+
+    // --- TÍCH HỢP GEMINI API (BẢO MẬT & KIỂM SOÁT BỊA ĐẶT) ---
+    function openApiKeyModal() {
+      const storedKey = sessionStorage.getItem('GEMINI_API_KEY') || '';
+      document.getElementById('api-key-input').value = storedKey;
+      document.getElementById('api-modal').classList.remove('hidden');
+    }
+
+    function closeApiKeyModal() {
+      document.getElementById('api-modal').classList.add('hidden');
+    }
+
+    function saveApiKey() {
+      const key = document.getElementById('api-key-input').value.trim();
+      if (key) {
+        sessionStorage.setItem('GEMINI_API_KEY', key);
+        alert('Đã lưu khóa API Gemini vào phiên làm việc thành công!');
+        updateApiButtonLabel(true);
+      } else {
+        sessionStorage.removeItem('GEMINI_API_KEY');
+        alert('Đã xóa khóa API.');
+        updateApiButtonLabel(false);
+      }
+      closeApiKeyModal();
+    }
+
+    function updateApiButtonLabel(hasKey) {
+      const label = document.getElementById('api-btn-label');
+      if (label) {
+        label.innerText = hasKey ? 'Đã cài API Gemini' : 'Cài đặt API Gemini';
+      }
+    }
+
+    // SYSTEM INSTRUCTION & GỬI YÊU CẦU ĐẾN GEMINI
+    async function sendGeminiQuery(genreName) {
+      const queryInput = document.getElementById('ai-user-query');
+      const chatOutput = document.getElementById('ai-chat-output');
+      const sendBtn = document.getElementById('ai-send-btn');
+      const query = queryInput.value.trim();
+
+      if (!query) return;
+
+      const apiKey = sessionStorage.getItem('GEMINI_API_KEY');
+      if (!apiKey) {
+        alert('Vui lòng bấm nút "Cài đặt API Gemini" ở góc trên để nhập khóa API trước khi tra cứu.');
+        openApiKeyModal();
+        return;
+      }
+
+      // Append User message
+      chatOutput.innerHTML += `
+        <div class="flex justify-end my-2">
+          <div class="bg-co_do text-white px-3 py-2 rounded-lg max-w-[85%] text-xs sm:text-sm">
+            <strong>Bạn:</strong> ${query}
+          </div>
+        </div>
+      `;
+      queryInput.value = '';
+      sendBtn.disabled = true;
+      chatOutput.scrollTop = chatOutput.scrollHeight;
+
+      // Loading state
+      const loadingId = 'loading-' + Date.now();
+      chatOutput.innerHTML += `
+        <div id="${loadingId}" class="flex items-center space-x-2 text-gray-500 italic text-xs my-2">
+          <i data-lucide="loader-2" class="w-4 h-4 animate-spin text-vang_dong"></i>
+          <span>Gemini đang đối chiếu sử liệu âm nhạc...</span>
+        </div>
+      `;
+      lucide.createIcons();
+      chatOutput.scrollTop = chatOutput.scrollHeight;
+
+      // System Prompt ràng buộc tuyệt đối không bịa đặt
+      const systemInstruction = `
+Bạn là chuyên gia thẩm định âm nhạc cổ truyền Việt Nam của ứng dụng "Thư viện âm nhạc truyền thống".
+Người dùng đang quan tâm đến loại hình: "${genreName}".
+QUY TẮC BẮT BUỘC:
+1. Trả lời bằng tiếng Việt trang nhã, chính xác, ngắn gọn, có dẫn chứng văn hóa, lịch sử.
+2. Tuyệt đối chỉ cung cấp thông tin lịch sử và nghệ thuật đã được kiểm chứng (như tài liệu của UNESCO, Bộ Văn hóa Thể thao Du lịch, Viện Âm nhạc).
+3. Nếu không có dữ liệu hoặc câu hỏi không rõ ràng/nằm ngoài kiến thức chuẩn xác, phải thông báo rõ: "Hiện tại tư liệu lịch sử chính thống chưa ghi nhận đầy đủ chi tiết này, hệ thống xin không tự phỏng đoán nhằm đảm bảo tính toàn vẹn của di sản." Tuyệt đối không bịa đặt sử liệu.
+      `;
+
+      try {
+        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            contents: [
+              {
+                role: 'user',
+                parts: [
+                  { text: `${systemInstruction}\n\nCâu hỏi của người dùng: ${query}` }
+                ]
+              }
+            ]
+          })
+        });
+
+        const data = await response.json();
+        document.getElementById(loadingId)?.remove();
+
+        if (data.candidates && data.candidates[0]?.content?.parts[0]?.text) {
+          const aiReply = data.candidates[0].content.parts[0].text;
+          chatOutput.innerHTML += `
+            <div class="flex justify-start my-2">
+              <div class="bg-amber-100/90 text-chu_xam border border-amber-300 p-3 rounded-lg max-w-[90%] text-xs sm:text-sm leading-relaxed text-justify">
+                <div class="font-bold text-co_do mb-1 flex items-center space-x-1">
+                  <i data-lucide="sparkles" class="w-3.5 h-3.5 text-vang_dong"></i>
+                  <span>Trợ lý Gemini:</span>
+                </div>
+                ${aiReply.replace(/\n/g, '<br>')}
+              </div>
+            </div>
+          `;
+        } else {
+          chatOutput.innerHTML += `
+            <div class="text-red-600 text-xs my-2">
+              Lỗi: Không nhận được phản hồi hợp lệ từ Gemini. Vui lòng kiểm tra lại khóa API hoặc kết nối.
+            </div>
+          `;
+        }
+      } catch (err) {
+        document.getElementById(loadingId)?.remove();
+        chatOutput.innerHTML += `
+          <div class="text-red-600 text-xs my-2">
+            Không thể kết nối đến Gemini API. Hãy chắc chắn rằng bạn đã nhập đúng API Key hợp lệ.
+          </div>
+        `;
+      } finally {
+        sendBtn.disabled = false;
+        lucide.createIcons();
+        chatOutput.scrollTop = chatOutput.scrollHeight;
+      }
+    }
+
+    function toggleMobileMenu() {
+      const menu = document.getElementById('mobile-menu');
+      menu.classList.toggle('hidden');
+    }
+
+    // --- KHỞI CHẠY ỨNG DỤNG ---
+    window.addEventListener('DOMContentLoaded', () => {
+      renderMusicCards(MUSIC_DATA);
+      renderReferenceSources();
+      updateApiButtonLabel(!!sessionStorage.getItem('GEMINI_API_KEY'));
+      lucide.createIcons();
+    });
+  </script>
+</body>
+</html>
