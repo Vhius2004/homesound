@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Thư viện Âm nhạc Truyền thống Việt Nam</title>
+  <title>HomeSound - Thư viện Âm nhạc Truyền thống Việt Nam (homesound.ai.studio)</title>
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Google Fonts & Lucide Icons -->
@@ -21,7 +21,7 @@
             co_do_dark: '#5B0017',
             vang_dong: '#B8860B',   // Vàng đồng truyền thống
             vang_dong_light: '#E6C687',
-            giay_do: '#FAF6EE',     // Nền màu giấy dó nhẹ nhàng
+            giay_do: '#FAF6EE',     // Nền màu giấy dó trang nhã
             chu_xam: '#2D2825',
           },
           fontFamily: {
@@ -55,14 +55,17 @@
   <header class="sticky top-0 z-50 bg-[#800020] text-[#FAF6EE] shadow-md border-b-2 border-vang_dong">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex items-center justify-between h-20">
-        <!-- Logo -->
+        <!-- Logo & Thương hiệu homesound.ai.studio -->
         <div class="flex items-center space-x-3 cursor-pointer" onclick="navigate('home')">
-          <div class="w-12 h-12 rounded-full border-2 border-vang_dong flex items-center justify-center bg-[#5B0017]">
+          <div class="w-12 h-12 rounded-full border-2 border-vang_dong flex items-center justify-center bg-[#5B0017] shadow-inner">
             <i data-lucide="music" class="w-6 h-6 text-vang_dong"></i>
           </div>
           <div>
-            <h1 class="font-serif font-bold text-lg sm:text-xl tracking-wide text-white">ÂM NHẠC TRUYỀN THỐNG</h1>
-            <p class="text-xs text-vang_dong_light tracking-wider uppercase font-semibold">Di sản ngàn năm nước Việt</p>
+            <h1 class="font-serif font-bold text-lg sm:text-xl tracking-wide text-white flex items-center gap-1.5">
+              <span>HOMESOUND</span>
+              <span class="text-xs px-2 py-0.5 rounded bg-vang_dong/30 text-vang_dong_light border border-vang_dong/40 font-mono font-normal">AI Studio</span>
+            </h1>
+            <p class="text-xs text-vang_dong_light tracking-wider font-semibold font-mono">homesound.ai.studio</p>
           </div>
         </div>
 
@@ -72,7 +75,7 @@
           <button onclick="navigate('intro')" class="nav-btn hover:text-vang_dong transition py-1" id="nav-intro">Giới thiệu</button>
           <button onclick="navigate('sources')" class="nav-btn hover:text-vang_dong transition py-1" id="nav-sources">Nguồn tham khảo</button>
           
-          <button onclick="openApiKeyModal()" class="flex items-center space-x-1.5 px-3.5 py-1.5 rounded-full border border-vang_dong text-vang_dong_light hover:bg-vang_dong hover:text-[#5B0017] transition text-xs font-semibold">
+          <button onclick="openApiKeyModal()" class="flex items-center space-x-1.5 px-3.5 py-1.5 rounded-full border border-vang_dong text-vang_dong_light hover:bg-vang_dong hover:text-[#5B0017] transition text-xs font-semibold shadow-sm">
             <i data-lucide="key" class="w-3.5 h-3.5"></i>
             <span id="api-btn-label">Cài đặt API Gemini</span>
           </button>
@@ -80,7 +83,7 @@
 
         <!-- Menu Mobile Button -->
         <div class="flex md:hidden items-center space-x-2">
-          <button onclick="openApiKeyModal()" class="p-2 text-vang_dong" title="API Key">
+          <button onclick="openApiKeyModal()" class="p-2 text-vang_dong" title="Cấu hình API Key">
             <i data-lucide="key" class="w-5 h-5"></i>
           </button>
           <button onclick="toggleMobileMenu()" class="p-2 text-white">
@@ -108,13 +111,13 @@
         <div class="relative z-10 max-w-2xl space-y-4">
           <div class="inline-flex items-center space-x-2 bg-vang_dong/20 border border-vang_dong/60 px-3 py-1 rounded-full text-xs font-semibold text-vang_dong_light">
             <i data-lucide="sparkles" class="w-3.5 h-3.5 text-vang_dong"></i>
-            <span>Bảo tồn & Lan tỏa Tinh hoa Dân tộc</span>
+            <span>Dự án HomeSound: Bảo tồn & Lan tỏa Tinh hoa Di sản</span>
           </div>
           <h2 class="text-3xl sm:text-4xl lg:text-5xl font-serif font-bold text-white leading-tight">
             Gìn giữ Hồn cốt Giai điệu Việt
           </h2>
           <p class="text-gray-200 text-sm sm:text-base leading-relaxed">
-            Khám phá chiều sâu lịch sử, không gian diễn xướng và giá trị nghệ thuật đặc sắc của các di sản âm nhạc truyền thống được UNESCO vinh danh.
+            Khám phá chiều sâu lịch sử, không gian diễn xướng và giá trị nghệ thuật đặc sắc của các di sản âm nhạc truyền thống được UNESCO vinh danh thông qua ứng dụng trí tuệ nhân tạo.
           </p>
           
           <!-- Thanh tìm kiếm nhanh -->
@@ -131,7 +134,7 @@
             </div>
           </div>
         </div>
-        <!-- Hoa văn trang trí góc -->
+        <!-- Hoa văn trang trí -->
         <div class="absolute -right-12 -bottom-12 opacity-10 pointer-events-none">
           <i data-lucide="disc-3" class="w-96 h-96 text-white"></i>
         </div>
@@ -142,7 +145,7 @@
         <div class="flex items-center justify-between mb-6">
           <div>
             <h3 class="text-2xl font-serif font-bold text-co_do">Di Sản Âm Nhạc Tiêu Biểu</h3>
-            <p class="text-xs sm:text-sm text-gray-600 mt-1">Chọn một thể loại để xem tư liệu chi tiết và đối thoại cùng AI</p>
+            <p class="text-xs sm:text-sm text-gray-600 mt-1">Chọn một thể loại để xem tư liệu chi tiết và đối thoại cùng Trợ lý Gemini</p>
           </div>
           <span id="result-count" class="text-xs font-semibold px-3 py-1 bg-amber-100 text-co_do border border-vang_dong/40 rounded-full">
             4 Loại hình
@@ -172,7 +175,7 @@
       <div class="bg-white rounded-2xl shadow-md border border-amber-200/80 p-6 sm:p-10">
         <div class="border-b border-amber-200 pb-5 mb-6">
           <h2 class="text-2xl sm:text-3xl font-serif font-bold text-co_do">Giới Thiệu Đề Tài Thực Tập</h2>
-          <p class="text-sm text-gray-600 mt-1">Báo cáo dự án học tập & phát triển công nghệ truyền thông di sản</p>
+          <p class="text-sm text-gray-600 mt-1">Hệ thống Thư viện Âm nhạc Truyền thống Việt Nam (HomeSound)</p>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
@@ -198,9 +201,13 @@
                 <span class="text-gray-600">Đợt thực tập:</span>
                 <span class="font-bold text-chu_xam">Thực tập sinh Đợt 15</span>
               </div>
-              <div class="flex justify-between">
+              <div class="flex justify-between border-b border-amber-200/60 pb-2">
                 <span class="text-gray-600">Đơn vị liên kết:</span>
-                <span class="font-bold text-co_do">FPT Polytechnic & IMTA TECH</span>
+                <span class="font-bold text-co_do">FPT Polytechnic và IMTA TECH</span>
+              </div>
+              <div class="flex justify-between pt-1">
+                <span class="text-gray-600">Website dự án:</span>
+                <span class="font-mono font-bold text-co_do bg-amber-100 px-2 py-0.5 rounded border border-vang_dong/30">homesound.ai.studio</span>
               </div>
             </div>
           </div>
@@ -208,12 +215,12 @@
           <div class="space-y-4">
             <h3 class="text-lg font-serif font-bold text-vang_dong flex items-center space-x-2">
               <i data-lucide="target" class="w-5 h-5 text-co_do"></i>
-              <span>Mục tiêu của Dự án Ứng dụng</span>
+              <span>Mục tiêu của Dự án HomeSound</span>
             </h3>
             <ul class="space-y-3 text-sm text-gray-700 leading-relaxed list-disc list-inside bg-giay_do p-5 rounded-xl border border-amber-200">
-              <li><strong>Số hóa dữ liệu văn hóa:</strong> Giúp học sinh, sinh viên và công chúng dễ dàng tiếp cận các loại hình di sản âm nhạc dân tộc có hệ thống.</li>
-              <li><strong>Tương tác trí tuệ nhân tạo:</strong> Ứng dụng mô hình ngôn ngữ lớn (Google Gemini) để giải đáp kiến thức chuẩn xác, hỗ trợ học tập lịch sử âm nhạc trực quan.</li>
-              <li><strong>Thiết kế thân thiện:</strong> Giao diện tối ưu cho đa thiết bị, phong cách mỹ thuật cổ truyền chuẩn mực, dễ đọc và dễ thao tác.</li>
+              <li><strong>Số hóa dữ liệu di sản:</strong> Giúp học sinh, sinh viên và công chúng dễ dàng tra cứu, tiếp cận các loại hình di sản âm nhạc cổ truyền chuẩn mực.</li>
+              <li><strong>Tương tác trí tuệ nhân tạo (Gemini AI):</strong> Giải đáp kiến thức chuyên sâu về nguồn gốc, cấu tạo nhạc cụ và ý nghĩa văn hóa dựa trên sử liệu chính thống, không bịa đặt.</li>
+              <li><strong>Trải nghiệm hiện đại:</strong> Giao diện tối ưu hóa cho cả thiết bị di động và máy tính, gìn giữ mỹ cảm dân tộc trong phong cách trực quan.</li>
             </ul>
           </div>
         </div>
@@ -250,7 +257,7 @@
       </div>
 
       <div class="text-xs text-gray-600 leading-relaxed bg-amber-50 p-3 rounded-lg border border-amber-200">
-        <p><strong>Bảo mật:</strong> Khóa API của bạn được lưu tạm thời trong trình duyệt (<code>sessionStorage</code>), không lưu trữ công khai trong mã nguồn, bảo đảm tiêu chuẩn an toàn.</p>
+        <p><strong>Bảo mật:</strong> Khóa API của bạn được lưu an toàn trong bộ nhớ tạm thời của phiên duyệt web (<code>sessionStorage</code>), tuyệt đối không lưu chết trong mã nguồn công khai.</p>
       </div>
 
       <div>
@@ -273,15 +280,19 @@
   <!-- ================= FOOTER ================= -->
   <footer class="bg-[#5B0017] text-white border-t-2 border-vang_dong mt-12 py-6 text-xs text-center">
     <div class="max-w-7xl mx-auto px-4 space-y-2">
-      <p class="font-serif tracking-wider font-bold text-vang_dong_light">THƯ VIỆN ÂM NHẠC TRUYỀN THỐNG VIỆT NAM</p>
-      <p class="text-gray-300">Sản phẩm thực tập của sinh viên: <strong class="text-white">Lừ Văn Hiếu (PH69927)</strong> - Nhóm 1 - Đợt 15 FPT Polytechnic & IMTA TECH</p>
-      <p class="text-gray-400 text-[11px]">Dữ liệu phục vụ mục đích giáo dục, lưu trữ và bảo tồn di sản văn hóa phi vật thể.</p>
+      <p class="font-serif tracking-wider font-bold text-vang_dong_light">
+        HOMESOUND - THƯ VIỆN ÂM NHẠC TRUYỀN THỐNG VIỆT NAM (homesound.ai.studio)
+      </p>
+      <p class="text-gray-300">
+        Sản phẩm thực tập của sinh viên: <strong class="text-white">Lừ Văn Hiếu (PH69927)</strong> - Nhóm 1 - Đợt 15 FPT Polytechnic và IMTA TECH
+      </p>
+      <p class="text-gray-400 text-[11px]">Dữ liệu phục vụ công tác giáo dục, bảo tồn và quảng bá di sản văn hóa phi vật thể dân tộc.</p>
     </div>
   </footer>
 
   <!-- ================= JAVASCRIPT LOGIC ================= -->
   <script>
-    // --- DỮ LIỆU CHUẨN 4 LOẠI HÌNH ÂM NHẠC ---
+    // --- DỮ LIỆU MẪU 4 LOẠI HÌNH ÂM NHẠC ---
     const MUSIC_DATA = [
       {
         id: "quan-ho",
@@ -340,8 +351,8 @@
         vungMien: "21 tỉnh, thành phố khu vực Nam Bộ",
         unesco: "Di sản văn hóa phi vật thể đại diện của nhân loại (2013)",
         hinhAnh: "https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=800&q=80",
-        moTaNgan: "Tiếng tơ đồng phóng khoáng, biểu thị nét nghĩa khí, tâm hồn phóng khoáng và phóng khoáng của người dân phương Nam.",
-        lichSu: "Ra đời vào cuối thế kỷ 19, bắt nguồn từ nhạc lễ Cung đình Huế kết hợp với điệu hò, điệu lý dân gian miệt vườn sông nước Cửu Long do các bậc tiền bối như cụ Nguyễn Quang Đại (Ba Đợi) truyền dạy.",
+        moTaNgan: "Tiếng tơ đồng phóng khoáng, biểu thị nét nghĩa khí, tâm hồn hào sảng của người dân miệt vườn sông nước phương Nam.",
+        lichSu: "Ra đời vào cuối thế kỷ 19, bắt nguồn từ nhạc lễ Cung đình Huế kết hợp với điệu hò, điệu lý dân gian miệt vườn sông nước Cửu Long do các bậc tiền bối như nhạc sư Nguyễn Quang Đại (Ba Đợi) truyền dạy.",
         khongGian: "Không gian sinh hoạt cộng đồng gần gũi: dưới bóng râm vườn cây trái, trên bến sông, ghe thuyền, hoặc những đêm trăng thanh sau ngày mùa lao động vất vả.",
         dacTrung: "Hệ thống bài bản gồm '20 bản tổ' (6 bản Bắc, 3 bản Nam, 4 bản Oán, 7 bản Lớn). Ban nhạc phối hợp ngũ tuyệt: Đàn tranh, đàn kìm (đàn nguyệt), đàn cò, đàn bầu và ghi-ta phím lõm độc đáo.",
         baiMau: [
@@ -633,7 +644,7 @@
       lucide.createIcons();
     }
 
-    // --- TÍCH HỢP GEMINI API (BẢO MẬT & KIỂM SOÁT BỊA ĐẶT) ---
+    // --- TÍCH HỢP GEMINI API (BẢO MẬT & RÀNG BUỘC KHÔNG BỊA ĐẶT) ---
     function openApiKeyModal() {
       const storedKey = sessionStorage.getItem('GEMINI_API_KEY') || '';
       document.getElementById('api-key-input').value = storedKey;
@@ -665,7 +676,7 @@
       }
     }
 
-    // SYSTEM INSTRUCTION & GỬI YÊU CẦU ĐẾN GEMINI
+    // GỬI YÊU CẦU ĐẾN GEMINI
     async function sendGeminiQuery(genreName) {
       const queryInput = document.getElementById('ai-user-query');
       const chatOutput = document.getElementById('ai-chat-output');
@@ -681,7 +692,6 @@
         return;
       }
 
-      // Append User message
       chatOutput.innerHTML += `
         <div class="flex justify-end my-2">
           <div class="bg-co_do text-white px-3 py-2 rounded-lg max-w-[85%] text-xs sm:text-sm">
@@ -693,7 +703,6 @@
       sendBtn.disabled = true;
       chatOutput.scrollTop = chatOutput.scrollHeight;
 
-      // Loading state
       const loadingId = 'loading-' + Date.now();
       chatOutput.innerHTML += `
         <div id="${loadingId}" class="flex items-center space-x-2 text-gray-500 italic text-xs my-2">
@@ -704,9 +713,8 @@
       lucide.createIcons();
       chatOutput.scrollTop = chatOutput.scrollHeight;
 
-      // System Prompt ràng buộc tuyệt đối không bịa đặt
       const systemInstruction = `
-Bạn là chuyên gia thẩm định âm nhạc cổ truyền Việt Nam của ứng dụng "Thư viện âm nhạc truyền thống".
+Bạn là chuyên gia thẩm định âm nhạc cổ truyền Việt Nam của ứng dụng HomeSound (homesound.ai.studio).
 Người dùng đang quan tâm đến loại hình: "${genreName}".
 QUY TẮC BẮT BUỘC:
 1. Trả lời bằng tiếng Việt trang nhã, chính xác, ngắn gọn, có dẫn chứng văn hóa, lịch sử.
@@ -749,7 +757,7 @@ QUY TẮC BẮT BUỘC:
         } else {
           chatOutput.innerHTML += `
             <div class="text-red-600 text-xs my-2">
-              Lỗi: Không nhận được phản hồi hợp lệ từ Gemini. Vui lòng kiểm tra lại khóa API hoặc kết nối.
+              Lỗi: Không nhận được phản hồi hợp lệ từ Gemini. Vui lòng kiểm tra lại khóa API hoặc kết nối mạng.
             </div>
           `;
         }
